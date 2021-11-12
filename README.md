@@ -15,3 +15,5 @@ grafana:
 mkdir grafana
 chown 472:472 grafana
 </pre>
+
+Youtube video explaining how to use this docker-compose.yml : https://youtu.be/Gl6LU1BEr1I
