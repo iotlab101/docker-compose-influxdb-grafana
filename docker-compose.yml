@@ -4,12 +4,12 @@ influxdb:
   ports:
     - "8086:8086"
   env_file:
-    - 'env.influxdb'
+    - 'data/influxdb/env.influxdb'
   volumes:
     # Data persistency
-    # sudo mkdir -p /srv/docker/influxdb/data
-    - ./influxdb/data:/root/.influxdb
-    - ./influxdb/etc:/etc/influxdb/:ro
+    - ./data/influxdb/data:/root/.influxdb
+    - ./data/influxdb/etc:/etc/influxdb/:ro
+  restart: always
 
 grafana:
   image: grafana/grafana:latest
@@ -17,8 +17,9 @@ grafana:
   ports:
     - "3000:3000"
   env_file:
-    - 'env.grafana'
-  #volumes:
-    #- ./grafana:/var/lib/grafana
+    - 'data/grafana/env.grafana'
+  volumes:
+    - ./data/grafana:/var/lib/grafana
   links:
     - influxdb
+  restart: always

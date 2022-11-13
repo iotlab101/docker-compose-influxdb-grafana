@@ -1,11 +1,17 @@
 #!/bin/bash
 export PATH=/home/ubuntu/bin:/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 
+if [ $# -gt 0 ]  && [ $1 == 'dummy' ]
+then
+    dummy=true
+fi
+
 function monitor() {
     read f1 f2 used avail f5 f6 all <<< $(free -m | grep 'Mem')
     IFS='[ ,]' read f1 user f2 sys f3 f4 f5 idle all <<< $(top -b -n 1 | grep -E "%Cpu")
 
-    curl -i -XPOST 'http://127.0.0.1:8086/write?db=sensorDB' --data-binary "cpu,host=influx user=$user,sys=$sys,idle=$idle,mem=$used"
+    curl -i -XPOST 'http://iot:iot@127.0.0.1:8086/write?db=mydb' --data-binary "cpu,host=machine1 user=$user,sys=$sys,idle=$idle,mem=$used"
+    [ $dummy ] && curl -i -XPOST 'http://iot:iot@127.0.0.1:8086/write?db=mydb' --data-binary "cpu,host=machine2 sys=$user,user=$sys,idle=$idle,mem=$used"
 }
 
 while [ true ]
@@ -13,3 +19,4 @@ do
     monitor
     sleep 5
 done
+
