@@ -9,40 +9,13 @@ sudo chown -R 472:472 data/grafana
 </pre>
 
 
+# Lab
 
-**Youtube video explaining how to use this docker-compose.yml**
-[![Youtube video explaining how to use this docker-compose.yml](https://user-images.githubusercontent.com/13171662/141387616-bb4895bd-71ad-4647-8851-498f49292fc9.png)](https://youtu.be/Gl6LU1BEr1I "Youtube video explaining how to use this docker-compose.yml")
-
-# Additional Lab
-
-1. Enable the Authetication for the InfluxDB
-```sh
-mkdir data/influxdb/etc
-mv data/influxdb.conf data/influxdb/etc
-docker-compose restart
-docker exec -it influxdb influx
-> CREATE USER admin WITH PASSWORD 'yourPassword' WITH ALL PRIVILEGES
-> auth
-> username: admin
-> password:
-> create database mydb
-> CREATE USER iot WITH PASSWORD ‘iot'
-> grant all on mydb to iot
-> exit
-```
-
-2. Simulate CPU usages from multiple Host
-if you pass the argument 'dummy', then it will insert an addition tweaked data for the lab purpose.
-run the sys.monitor with the sub command 'dummy' as follows
-```
-./sys.monitor dummy
-```
-
-3. On the Grafana, you can create a dashboard with the same type of data from multiple sources.
-select a tag for the groupby
-
-<img src="https://user-images.githubusercontent.com/13171662/201512838-5342adf6-2862-4b26-8a9c-304e7ddc6962.png" width=600/>
-
-set the alias with [[tag_&lt;tagname&gt;]]
-
-<img src="https://user-images.githubusercontent.com/13171662/201512852-edd349cc-6334-4f36-af39-37d66ffd5a01.png" width=600/>
+1. git clone git@github.com:iotlab101/docker-compose-influxdb-grafana.git
+2. cd docker-compose-influxdb-grafana
+3. sudo chown -R 472:472 data/grafana
+4. docker-compose up -d
+5. open a web browser for http://<your pi>.local:8086, and create token & bucket
+6. modify sys.monitor with the token and the org id created on the previous step
+7. take the flux query from influxdb web(http://<your pi>.local:8086)
+8. and use it to create the grafana chart on htt://<your pi>.local:3000 
