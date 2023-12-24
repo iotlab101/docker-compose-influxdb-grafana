@@ -1,25 +1,29 @@
-influxdb:
-  image: influxdb:1.8
-  container_name: influxdb
-  ports:
-    - "8086:8086"
-  env_file:
-    - 'data/influxdb/env.influxdb'
-  volumes:
-    # Data persistency
-    - ./data/influxdb/data:/root/.influxdb
-    - ./data/influxdb/etc:/etc/influxdb/:ro
-  restart: always
-
-grafana:
-  image: grafana/grafana:latest
-  container_name: grafana
-  ports:
-    - "3000:3000"
-  env_file:
-    - 'data/grafana/env.grafana'
-  volumes:
-    - ./data/grafana:/var/lib/grafana
-  links:
-    - influxdb
-  restart: always
+version: '3'
+services:
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    env_file:
+      - 'data/influxdb/env.influxdb'
+    volumes:
+      # Data persistency
+      - ./data/influxdb/data:/root/.influxdb
+      - ./data/influxdb/etc:/etc/influxdb/:ro
+    restart: always
+  
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    env_file:
+      - 'data/grafana/env.grafana'
+    links:
+      - influxdb
+    environment:
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    restart: always

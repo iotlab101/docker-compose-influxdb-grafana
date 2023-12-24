@@ -1,0 +1,91 @@
+[
+    {
+        "id": "b654ffb04e827355",
+        "type": "function",
+        "z": "cec237d2867f2266",
+        "name": "BuildTemplate",
+        "func": "//NOTE, more then one chart on a page, rename in the second and following \n//templates the \"myframe\" variable so that every template has a unique name.\nlet from = msg.fromdate || 'now-10m';\nlet to = msg.enddate || 'now';\n\npanelid=1\n\nmsg.payload= \"http://rpi5.local:3000/d-solo/fb119fb7-7f5b-4bce-b40f-ae26a0f0b621/new-dashboard?orgId=1\"+\n\"&refresh=3s\"+\n\"&theme=light\"+\n\"&from=\"+ from +\n\"&to=\"+ to +\n\"&panelId=\"+panelid\n\nreturn msg;\n\n",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 380,
+        "wires": [
+            [
+                "441afefcbd082242"
+            ]
+        ]
+    },
+    {
+        "id": "441afefcbd082242",
+        "type": "ui_template",
+        "z": "cec237d2867f2266",
+        "group": "885b89c44adb4431",
+        "name": "chart",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "format": "<html>\n<iframe id=\"myFrame\" width=\"100%\" height=\"100%\" style = \"overflow:hidden; margin:auto; border:0px solid green;\"></iframe>\n\n<script>\n//NOTE, more then one chart on a page, rename in the second and following \n//templates the \"myframe\" variable so that every template has a unique name.\n(function(scope) {\n    // watch msg object from Node-RED\n    scope.$watch('msg', function(msg) {\n        // new message received\n        var x = document.getElementById('myFrame');\n        x.setAttribute('src', msg.payload); \n        });\n})(scope);\n</script>\n</html>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 650,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e7582cd15b738206",
+        "type": "inject",
+        "z": "cec237d2867f2266",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 380,
+        "wires": [
+            [
+                "b654ffb04e827355"
+            ]
+        ]
+    },
+    {
+        "id": "885b89c44adb4431",
+        "type": "ui_group",
+        "name": "Default",
+        "tab": "360851e5a04267d6",
+        "order": 1,
+        "disp": true,
+        "width": "12",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "360851e5a04267d6",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]

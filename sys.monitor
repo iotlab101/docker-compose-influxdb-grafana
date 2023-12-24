@@ -1,7 +1,10 @@
 #!/bin/bash
 export PATH=/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
 
-url='http://iot:iot@127.0.0.1:8086/write?db=mydb'
+token=Ewf23za6JJSM4l8c5lolfnBAw8p8iCfOr3qUIrMPhi65fhBbSF28DOo1J_ujG-tYzz_h7IWn-lkDxUxXG-cRdQ==
+org=test
+
+url="http://iot:iot@127.0.0.1:8086/api/v2/write?org=$org&bucket=bucket01"
 
 if [ $# -gt 0 ]  && [ $1 == 'dummy' ]
 then
@@ -11,9 +14,15 @@ fi
 function monitor() {
     read f1 f2 used avail f5 f6 all <<< $(free -m | grep 'Mem')
     IFS='[ ,]' read f1 user f2 sys f3 f4 f5 idle all <<< $(top -b -n 1 | grep -E "%Cpu")
+    curl -i -XPOST $url --header "Authorization: Token $token" --data-binary "cpu,host=machine1 user=$user,sys=$sys,idle=$idle,mem=$used"
 
-    curl -i -XPOST $url --data-binary "cpu,host=machine1 user=$user,sys=$sys,idle=$idle,mem=$used"
-    [ $dummy ] && curl -i -XPOST $url  --data-binary "cpu,host=machine2 sys=$user,user=$sys,idle=$idle,mem=$used"
+    if [ $dummy ] 
+    then
+        sleep 1
+        read f1 f2 used avail f5 f6 all <<< $(free -m | grep 'Mem')
+        IFS='[ ,]' read f1 user f2 sys f3 f4 f5 idle all <<< $(top -b -n 1 | grep -E "%Cpu")
+        curl -i -XPOST $url --header "Authorization: Token $token" --data-binary "cpu,host=machine2 user=$user,sys=$sys,idle=$idle,mem=$used"
+    fi
 }
 
 while [ true ]
