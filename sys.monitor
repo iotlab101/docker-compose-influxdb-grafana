@@ -4,7 +4,7 @@ export PATH=/home/ubuntu/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/us
 token=Ewf23za6JJSM4l8c5lolfnBAw8p8iCfOr3qUIrMPhi65fhBbSF28DOo1J_ujG-tYzz_h7IWn-lkDxUxXG-cRdQ==
 org=test
 
-url="http://iot:iot@127.0.0.1:8086/api/v2/write?org=$org&bucket=bucket01"
+url="http://127.0.0.1:8086/api/v2/write?org=$org&bucket=bucket01"
 
 if [ $# -gt 0 ]  && [ $1 == 'dummy' ]
 then
