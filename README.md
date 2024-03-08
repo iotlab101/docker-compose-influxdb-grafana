@@ -18,7 +18,7 @@ sudo chown -R 472:472 data/grafana
 1. git clone git@github.com:iotlab101/docker-compose-influxdb-grafana.git
 2. cd docker-compose-influxdb-grafana
 3. sudo chown -R 472:472 data/grafana
-4. docker-compose up -d
+4. docker compose up -d
 5. open a web browser for http://(your server or your pi).local:8086, and create token & bucket
 6. modify sys.monitor with the token and the org id created on the previous step
 7. take the flux query from influxdb web(http://(your server or your pi).local:8086)
