@@ -1,7 +1,7 @@
 Sample docker-compose configuration for influxdb & grafana
 ### this needs the docker installed
 - `curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh`
-- `sudo usermod -aG docker ubuntu` or `sudo usermod -aG docker pi`
+- `sudo usermod -aG docker ubuntu` for AWS EC2 or `sudo usermod -aG docker pi` for Raspberry Pi
 - `exit` and relogin
 - verify by running `docker ps`
 
